@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Payee</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.scss">
+</head>
+
+<body>
+    <div class="flex flex-col min-h-screen overflow-hidden">
+
+        <%- include('partials/header'); %>
+        <main class="flex-grow">
+
+            <section class="bg-gradient-to-b from-gray-100 to-white">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="pt-32 pb-12 md:pt-40 md:pb-20">
+
+                        <div class="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+                            <h1 class="h1">View Payee</h1>
+                        </div>
+
+                        <div class="max-w-3xl mx-auto">
+                        <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                    <tr>
+                                        <th scope="col" class="px-6 py-3">
+                                            S.No
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Name
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            Account Number
+                                        </th>
+                                        <th scope="col" class="px-6 py-3">
+                                            IFSC Code
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% for (var i=0; i < articles.length; i++) { %>
+                                        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                            <td class="px-6 py-4">
+                                                <%= i+1 %>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <%= articles[i].payee_name %>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <%= articles[i].payee_account_number %>
+                                            </td>
+                                            <td class="px-6 py-4">
+                                                <%= articles[i].bank_ifsc %>
+                                            </td>
+                                        </tr>
+                                        <% } %>
+                                </tbody>
+                            </table>
+                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </main>
+        <footer class="p-4 bg-white sm:p-6 dark:bg-gray-800">
+            <%- include('partials/footer'); %>
+        </footer>
+
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detect</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.scss">
+</head>
+
+<body>
+    <div class="flex flex-col min-h-screen overflow-hidden">
+
+        <header class={`fixed w-full z-30 md:bg-opacity-90 transition duration-300 ease-in-out ${!top && `bg-white
+            backdrop-blur-sm shadow-lg` }`}>
+            <%- include('partials/header'); %>
+        </header>
+        <div class="flex flex-wrap justify-center">
+            <canvas id="canvas" class="p-1 bg-white border rounded max-w-6xl max-h-full"></canvas>
+            <video id="video" class="p-1 bg-white border rounded max-w-6xl max-h-full" autoplay="true" style="display : none"></video>
+        </div>
+        <div class="max-w-sm mx-auto" style="visibility: hidden;">
+            <form action="/sendmessage" method="post">
+                <div class="flex flex-wrap -mx-3 mb-4">
+                    <div class="w-full px-3">
+                        <label class="block text-gray-800 text-sm font-medium mb-1" for="uname">Username</label>
+                        <input id="uname" type="text" name="uname" class="form-input w-full text-gray-800"
+                            placeholder="Enter your Username" required pattern="[0-9]{5}" />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mb-4">
+                    <div class="w-full px-3">
+                        <div class="flex justify-between">
+                            <label class="block text-gray-800 text-sm font-medium mb-1" for="pass">Password</label>
+                            <a href="/reset-password.html" class="text-sm font-medium text-blue-600 hover:underline">Forgot
+                                password</a>
+                        </div>
+                        <input id="pass" type="password" name="pass" class="form-input w-full text-gray-800"
+                            placeholder="Enter your password" required />
+                    </div>
+                </div>
+                <div class="flex flex-wrap -mx-3 mt-6">
+                    <div class="w-full px-3">
+                        <input class="btn text-white bg-blue-600 hover:bg-blue-700 w-full" type="submit" value="Sign In">
+                    </div>
+                </div>
+            </form>
+        
+            <div class="text-gray-600 text-center mt-6">
+                Account not yet activated?
+                <a href="signup.html" class="text-blue-600 hover:underline transition duration-150 ease-in-out">Activate Account
+                </a>
+            </div>
+        </div>
+        <footer class="p-4 bg-white sm:p-6 dark:bg-gray-800">
+            <%- include('partials/footer'); %>
+        </footer>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/blazeface"></script>
+    <script>
+        let video = document.getElementById("video");
+            let model;
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+            let flag = 0;
+            const setupCamera = () => {
+                navigator.mediaDevices.getUserMedia({
+                    video: {width: 160 , height:200},
+                    audio: false,
+                }).then((stream) => {
+                    video.srcObject = stream;
+                });
+            };
+
+            const detectFaces = async () => {
+                const prediction = await model.estimateFaces(video, false);
+                console.log(prediction)
+                //alert("Face detected");
+                //console.log(prediction);
+                /*
+                    estimateFaces returns an Array. So if prediction.length == 0. Face is not detected.
+                    Else face is detected and can be navigated to next page.
+                */
+                ctx.drawImage(video, 0, 0, 310, 160);
+                prediction.forEach(pred => {
+                    ctx.beginPath();
+                    ctx.lineWidth = "4";
+                    ctx.strokeStyle = "blue"
+                    ctx.rect(
+                        pred.topLeft[0],
+                        pred.topLeft[1],
+                        pred.bottomRight[0] - pred.topLeft[0],
+                        pred.bottomRight[1] - pred.topLeft[1],
+                    );
+                    ctx.stroke();
+                });
+                if (prediction.length == 1) {
+                    flag = 1;
+                    window.setTimeout(function () {
+                        window.location.href = '/home/getdata';
+                    }, 1000);
+                }
+                else {
+                }
+            };
+
+            setupCamera();
+
+
+            video.addEventListener("loadeddata", async () => {
+                model = await blazeface.load();
+                if(flag==0){
+                    var myInterval = setInterval(detectFaces, 40);
+                }
+                else{
+                    clearInterval(myInterval);
+                }
+            });
+
+    </script>
+</body>
+
+</html>

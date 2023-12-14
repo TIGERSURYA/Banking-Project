@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Home</title>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="main.scss">
+</head>
+
+<body>
+    <div class="flex flex-col min-h-screen overflow-hidden">
+        <main class="flex-grow">
+
+            <section class="bg-gradient-to-b from-gray-100 to-white">
+                <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                    <div class="pt-32 pb-12 md:pt-40 md:pb-20">
+
+                        <div class="max-w-3xl mx-auto text-center pb-12 md:pb-20">
+                            <h1 class="h1">Admin Home</h1>
+                        </div>
+                        <form action="/admin/accept" method="post">
+                            <div class="mx-auto">
+                                <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+                                    <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                                        <thead
+                                            class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                                            <tr>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Request No
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    First Name
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Phone Number
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    E-Mail
+                                                </th>
+                                                <th scope="col" class="px-6 py-3">
+                                                    Accept
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% for(var i=0; i<articles.length; i++){ %>
+                                                <tr
+                                                    class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                                    <td class="px-6 py-4">
+                                                        <%= articles[i].r_no %>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <%= articles[i].r_consumer_first_name %>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <%= articles[i].r_consumer_phone_number %>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <%= articles[i].r_consumer_email %>
+                                                    </td>
+                                                    <td class="px-6 py-4">
+                                                        <button class="btn text-blue" type="submit"
+                                                            value="<%= articles[i].r_no %>"
+                                                            name="accept">Accept</button>
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="flex flex-wrap -mx-3 mt-6">
+                            <div class="w-full px-3">
+                                <button class="btn text-white bg-blue-600 hover:bg-blue-700 w-1/6" type="submit"
+                                    name="report" onclick="location.href='/admin/reports'">Report Generation</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+    </div>
+    </section>
+
+    </main>
+
+    </div>
+</body>
+
+</html>
